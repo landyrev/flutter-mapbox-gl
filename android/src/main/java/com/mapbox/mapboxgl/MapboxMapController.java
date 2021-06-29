@@ -267,6 +267,13 @@ final class MapboxMapController
       final Bitmap bitmap = getScaledImage(id, displayMetrics.density);
       if (bitmap != null) {
         mapboxMap.getStyle().addImage(id, bitmap);
+      } else {
+        // We need to return any image so style.setImage can work in asynchronous way
+        Bitmap emptyBitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+        mapboxMap.getStyle().addImage(id, emptyBitmap);
+        final Map<String, Object> arguments = new HashMap<>(2);
+        arguments.put("imageName", id);
+        methodChannel.invokeMethod("map#styleImageMissing", arguments);
       }
     });
 
