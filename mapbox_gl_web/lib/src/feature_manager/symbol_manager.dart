@@ -1,10 +1,12 @@
 part of mapbox_gl_web;
 
 class SymbolManager extends FeatureManager<SymbolOptions> {
-  SymbolManager({
-    required MapboxMap map,
-    ArgumentCallbacks<String>? onTap,
-  }) : super(
+  ArgumentCallbacks<String>? onStyleImageMissing;
+  SymbolManager(
+      {required MapboxMap map,
+      ArgumentCallbacks<String>? onTap,
+      this.onStyleImageMissing})
+      : super(
           sourceId: 'symbol_source',
           layerId: 'symbol_layer',
           map: map,
@@ -53,7 +55,8 @@ class SymbolManager extends FeatureManager<SymbolOptions> {
     });
 
     map.on('styleimagemissing', (event) {
-      if (event.id == '') {
+      if (this.onStyleImageMissing != null) {
+        this.onStyleImageMissing!.call(event.id);
         return;
       }
       var density = context['window'].devicePixelRatio ?? 1;
