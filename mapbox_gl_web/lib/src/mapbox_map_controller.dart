@@ -393,8 +393,10 @@ class MapboxMapController extends MapboxGlPlatform
     for (final annotationType in annotationOrder) {
       switch (annotationType) {
         case 'AnnotationType.symbol':
-          symbolManager =
-              SymbolManager(map: _map, onTap: onSymbolTappedPlatform);
+          symbolManager = SymbolManager(
+              map: _map,
+              onTap: onSymbolTappedPlatform,
+              onStyleImageMissing: this.onStyleImageMissing);
           break;
         case 'AnnotationType.line':
           lineManager = LineManager(map: _map, onTap: onLineTappedPlatform);

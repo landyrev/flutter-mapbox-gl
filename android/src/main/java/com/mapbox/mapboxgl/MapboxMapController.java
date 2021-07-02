@@ -263,6 +263,10 @@ final class MapboxMapController
     mapboxMap.addOnCameraIdleListener(this);
 
     mapView.addOnStyleImageMissingListener((id) -> {
+      final Map<String, Object> arguments = new HashMap<>(2);
+      arguments.put("imageName", id);
+      methodChannel.invokeMethod("map#styleImageMissing", arguments);
+
       DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
       final Bitmap bitmap = getScaledImage(id, displayMetrics.density);
       if (bitmap != null) {
